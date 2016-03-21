@@ -79,3 +79,4 @@ C:\Users\Kpcna\Documents\GitHub\GamesApp1\PoeStash\PoeStash\bin\Microsoft.Owin.S
 C:\Users\Kpcna\Documents\GitHub\GamesApp1\PoeStash\PoeStash\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Kpcna\Documents\GitHub\GamesApp1\PoeStash\PoeStash\obj\Debug\PoeStash.dll
 C:\Users\Kpcna\Documents\GitHub\GamesApp1\PoeStash\PoeStash\obj\Debug\PoeStash.pdb
+C:\Users\Kpcna\Documents\GitHub\GamesApp1\PoeStash\PoeStash\obj\Debug\PoeStash.csprojResolveAssemblyReference.cache

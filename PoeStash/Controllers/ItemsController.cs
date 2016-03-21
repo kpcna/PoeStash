@@ -1,10 +1,12 @@
-﻿using PoeStash.Models;
+﻿using Newtonsoft.Json.Linq;
+using PoeStash.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace PoeStash.Controllers
 {
@@ -13,23 +15,36 @@ namespace PoeStash.Controllers
         // GET: Items
         public ActionResult Index()
         {
+            List<Item> listItems = new List<Item>();
             using (WebClient wc = new WebClient())
             {
+                //http://www.pathofexile.com/api/public-stash-tabs?id=
                 var json = wc.DownloadString("http://www.pathofexile.com/api/public-stash-tabs");
-            }
+                //JToken Stashes = o.Last;
+                JObject jobject = JObject.Parse(json);
+                JToken PreviousNextId = null;
+                JToken CurrentNextId = jobject.First;
 
-            List<Item> listItems = new List<Item>();
-            Item item1 = new Item();
-            item1.name = "test1";
-            item1.icon = "http://pathofexile.com";
-            item1.league = "Perandus";
-            listItems.Add(item1);
+                while (PreviousNextId != CurrentNextId)
+                { 
+                    dynamic deserialized = JsonConvert.DeserializeObject(jobject.ToString());               
 
-            Item item2 = new Item();
-            item2.name = "test2";
-            item2.icon = "http://poetrade.com";
-            item2.league = "Taliman";
-            listItems.Add(item2);
+                    foreach (var data in deserialized.stashes)
+                    {
+                        Item item1 = new Item();
+                        item1.accountName = data.accountName;
+                        item1.stashType = data.stashType;
+                        item1.stash = data.stash;
+                        item1.lastCharacterName = data.lastCharacterName;
+                        listItems.Add(item1);
+                    }
+
+                    json = wc.DownloadString("http://www.pathofexile.com/api/public-stash-tabs?id=" + CurrentNextId.First);
+                    jobject = JObject.Parse(json);
+                    PreviousNextId = CurrentNextId;
+                    CurrentNextId = jobject.First;
+                }
+            }        
 
             return View(listItems);
         }
